@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "name": "high-assurance-system",
+  "authorityMode": "overlay",
+  "provider": "github",
+  "primaryRemote": "origin",
+  "baseBranches": ["main", "master", "staging", "develop"],
+  "protectedBranches": ["main", "master"],
+  "publicHandoffs": false,
+  "sourceBoundary": "host-defined",
+  "frameworkProfiles": ["host-defined"],
+  "capabilities": {
+    "read": "allowed",
+    "edit": "requires-explicit-authorization",
+    "push": "requires-explicit-authorization",
+    "merge": "requires-explicit-authorization",
+    "deploy": "requires-explicit-authorization",
+    "delete": "requires-explicit-authorization",
+    "public-disclose": "disabled"
+  },
+  "concurrency": {
+    "perOwner": 1,
+    "perWorktree": 1,
+    "lanes": {
+      "default": 1,
+      "database": 1,
+      "financial": 1,
+      "stock": 1,
+      "release": 1
+    }
+  },
+  "evidence": {
+    "ttlSeconds": 900,
+    "invalidationTriggers": [
+      "head-changed",
+      "worktree-changed",
+      "remote-ref-updated",
+      "profile-changed",
+      "environment-changed",
+      "deployment-changed"
+    ]
+  },
+  "adapters": {
+    "repository": "github",
+    "ci": "github-actions",
+    "frameworks": ["host-defined"],
+    "deployments": []
+  },
+  "riskRules": [
+    {
+      "name": "database-change",
+      "pathPrefixes": ["migrations/", "database/migrations/", "db/migrations/"],
+      "overlays": ["data-migration", "deployment-operations"]
+    },
+    {
+      "name": "authorization-boundary",
+      "pathPrefixes": ["auth/", "permissions/", "policies/", "src/auth/", "src/permissions/"],
+      "overlays": ["authorization"]
+    },
+    {
+      "name": "financial-state",
+      "pathPrefixes": ["accounting/", "billing/", "src/accounting/", "src/billing/"],
+      "overlays": ["money-ledger"]
+    },
+    {
+      "name": "inventory-state",
+      "pathPrefixes": ["inventory/", "stock/", "src/inventory/", "src/stock/"],
+      "overlays": ["stock-valuation"]
+    },
+    {
+      "name": "asynchronous-and-external",
+      "pathPrefixes": ["integrations/", "jobs/", "workers/", "src/integrations/", "src/jobs/", "src/workers/"],
+      "overlays": ["async-concurrency", "integration-contract"]
+    }
+  ],
+  "verification": {
+    "typeCheck": [],
+    "unit": [],
+    "integration": [],
+    "build": [],
+    "live": []
+  }
+}

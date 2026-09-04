@@ -1,0 +1,6 @@
+interface:
+  display_name: "HStack Host Profile"
+  short_description: "Discover host rules and authority"
+  default_prompt: "Use $hstack-host-profile to establish the repository rules, authority mode, boundaries, and native checks."
+policy:
+  allow_implicit_invocation: true

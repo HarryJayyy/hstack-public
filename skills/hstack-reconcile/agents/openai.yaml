@@ -1,0 +1,6 @@
+interface:
+  display_name: "HStack Reconcile"
+  short_description: "Inventory open work without cleanup"
+  default_prompt: "Use $hstack-reconcile to inventory branches, PRs, worktrees, and dirty state while preserving ambiguity."
+policy:
+  allow_implicit_invocation: true

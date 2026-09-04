@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "name": "my-project",
+  "authorityMode": "canonical",
+  "provider": "github",
+  "primaryRemote": "origin",
+  "baseBranches": ["main"],
+  "protectedBranches": ["main"],
+  "publicHandoffs": false,
+  "frameworkProfiles": ["generic"],
+  "capabilities": {
+    "read": "allowed",
+    "edit": "requires-explicit-authorization",
+    "push": "requires-explicit-authorization",
+    "merge": "requires-explicit-authorization",
+    "deploy": "requires-explicit-authorization",
+    "delete": "requires-explicit-authorization",
+    "public-disclose": "disabled"
+  },
+  "concurrency": {
+    "perOwner": 1,
+    "perWorktree": 1,
+    "lanes": { "default": 1 }
+  },
+  "evidence": {
+    "ttlSeconds": 900,
+    "invalidationTriggers": ["head-changed", "worktree-changed", "remote-ref-updated", "profile-changed"]
+  },
+  "adapters": {
+    "repository": "github",
+    "ci": "github-actions",
+    "frameworks": ["generic"],
+    "deployments": []
+  },
+  "riskRules": [],
+  "verification": {
+    "typeCheck": [],
+    "unit": [],
+    "integration": [],
+    "build": [],
+    "live": []
+  }
+}

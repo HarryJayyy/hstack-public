@@ -1,0 +1,6 @@
+interface:
+  display_name: "HStack Evidence"
+  short_description: "Bind proof to exact final state"
+  default_prompt: "Use $hstack-evidence to design verification, bind results to exact state, and issue a precise final verdict."
+policy:
+  allow_implicit_invocation: true

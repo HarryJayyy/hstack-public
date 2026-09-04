@@ -1,0 +1,34 @@
+{
+  "name": "hstack",
+  "version": "0.4.1",
+  "description": "A structured problem-solving and evidence stack for development agents.",
+  "author": {
+    "name": "HarryJayyy",
+    "url": "https://github.com/HarryJayyy"
+  },
+  "homepage": "https://github.com/HarryJayyy/hstack-public",
+  "repository": "https://github.com/HarryJayyy/hstack-public",
+  "license": "MIT",
+  "keywords": [
+    "high-assurance",
+    "agent-development",
+    "problem-solving",
+    "verification",
+    "change-control",
+    "agent-workflows"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "HStack",
+    "shortDescription": "Agent problem solving with verifiable outcomes",
+    "longDescription": "HStack routes development work through problem classification, host rules, impact analysis, bounded execution, invariant protection, and exact-state evidence.",
+    "developerName": "HarryJayyy",
+    "category": "Developer Tools",
+    "capabilities": ["Interactive", "Write"],
+    "defaultPrompt": [
+      "Use HStack to classify and execute this change safely.",
+      "Map this cross-system change's blast radius and required proof.",
+      "Reconcile open work without deleting anything."
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "HStack Invariants"
+  short_description: "Protect durable cross-system truth"
+  default_prompt: "Use $hstack-invariants to identify and prove the durable state, lifecycle, authorization, integration, and reconciliation invariants affected by this task."
+policy:
+  allow_implicit_invocation: true

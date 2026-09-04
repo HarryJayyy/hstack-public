@@ -1,0 +1,457 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/HarryJayyy/hstack-public/schemas/event-proof-receipt.schema.json",
+  "title": "HStack Event Proof Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "state",
+    "exitCode",
+    "generatedAt",
+    "subject",
+    "proofContract",
+    "repository",
+    "runtime",
+    "event",
+    "expectedGraph",
+    "implementationGraph",
+    "observedGraph",
+    "readbacks",
+    "scenarioProofs",
+    "artifacts",
+    "negativeControl",
+    "cleanup",
+    "invalidationTriggers"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "hstack-event-proof/v1" },
+    "state": { "$ref": "#/$defs/exitState" },
+    "exitCode": { "enum": [0, 2, 3, 4, 5] },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "subject": { "type": "string", "minLength": 1 },
+    "proofContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "negativeControlEnvironmentClass"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "negativeControlEnvironmentClass": { "$ref": "#/$defs/safeTestEnvironmentClass" }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "identity", "headSha", "dirty", "worktreeFingerprint"],
+      "properties": {
+        "provider": { "enum": ["github", "gitlab", "local"] },
+        "identity": { "type": "string", "minLength": 1 },
+        "headSha": { "$ref": "#/$defs/gitSha" },
+        "dirty": { "type": "boolean" },
+        "worktreeFingerprint": { "type": ["string", "null"] }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment", "observedAt", "fixture", "featureFlags"],
+      "properties": {
+        "environment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "class", "provider", "deploymentIdentity"],
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "class": { "enum": ["local", "dedicated-test", "staging", "production"] },
+            "provider": { "type": "string", "minLength": 1 },
+            "deploymentIdentity": { "type": ["string", "null"] }
+          }
+        },
+        "observedAt": { "type": "string", "format": "date-time" },
+        "fixture": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "version"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1 },
+            "version": { "type": "string", "minLength": 1 }
+          }
+        },
+        "featureFlags": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source",
+            "evaluationContext",
+            "canonicalization",
+            "digest",
+            "artifactIds"
+          ],
+          "properties": {
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "identity", "revision"],
+              "properties": {
+                "kind": { "type": "string", "minLength": 1 },
+                "identity": { "type": "string", "minLength": 1 },
+                "revision": { "type": ["string", "null"] }
+              }
+            },
+            "evaluationContext": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["subject", "tenant", "attributesDigest"],
+              "properties": {
+                "subject": { "type": "string", "minLength": 1 },
+                "tenant": { "type": ["string", "null"] },
+                "attributesDigest": { "$ref": "#/$defs/sha256" }
+              }
+            },
+            "canonicalization": { "const": "RFC8785" },
+            "digest": { "$ref": "#/$defs/sha256" },
+            "artifactIds": { "$ref": "#/$defs/artifactIds" }
+          }
+        }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "definitionId",
+        "definitionVersion",
+        "eventId",
+        "correlationId",
+        "idempotencyKey",
+        "occurredAt",
+        "policyRefs"
+      ],
+      "properties": {
+        "definitionId": { "type": "string", "minLength": 1 },
+        "definitionVersion": { "type": "string", "minLength": 1 },
+        "eventId": { "type": "string", "minLength": 1 },
+        "correlationId": { "type": "string", "minLength": 1 },
+        "idempotencyKey": { "type": "string", "minLength": 1 },
+        "occurredAt": { "type": "string", "format": "date-time" },
+        "policyRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "expectedGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reactions"],
+      "properties": {
+        "reactions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/expectedReaction" }
+        }
+      }
+    },
+    "implementationGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mappings"],
+      "properties": {
+        "mappings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/implementationMapping" }
+        }
+      }
+    },
+    "observedGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reactions"],
+      "properties": {
+        "reactions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/observedReaction" }
+        }
+      }
+    },
+    "readbacks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/readbackPair" }
+    },
+    "scenarioProofs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/scenarioProof" }
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "negativeControl": { "$ref": "#/$defs/negativeControl" },
+    "cleanup": { "$ref": "#/$defs/cleanup" },
+    "invalidationTriggers": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "exitState": {
+      "enum": ["PASS", "VIOLATION", "INCOMPLETE", "STALE", "UNKNOWN"]
+    },
+    "gitSha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40,64}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "safeTestEnvironmentClass": {
+      "enum": ["local-isolated", "ephemeral-test", "dedicated-test"]
+    },
+    "artifactIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "expectedReaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "module",
+        "mode",
+        "required",
+        "invariant",
+        "expectedEffect",
+        "dependsOn",
+        "cardinality",
+        "readback"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "module": { "type": "string", "minLength": 1 },
+        "mode": { "enum": ["atomic", "async", "outbox", "external", "derived", "audit"] },
+        "required": { "type": "boolean" },
+        "invariant": { "type": "string", "minLength": 1 },
+        "expectedEffect": { "type": "string", "minLength": 1 },
+        "dependsOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "cardinality": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min", "max"],
+          "properties": {
+            "min": { "type": "integer", "minimum": 0 },
+            "max": { "type": ["integer", "null"], "minimum": 0 }
+          }
+        },
+        "readback": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["requirement", "authorityRef"],
+          "properties": {
+            "requirement": { "enum": ["REQUIRED", "NOT_APPLICABLE"] },
+            "authorityRef": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "implementationMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expectedReactionId",
+        "implementationId",
+        "sourceRefs",
+        "mechanism",
+        "transactionBoundary"
+      ],
+      "properties": {
+        "expectedReactionId": { "type": "string", "minLength": 1 },
+        "implementationId": { "type": "string", "minLength": 1 },
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "mechanism": { "type": "string", "minLength": 1 },
+        "transactionBoundary": { "type": "string", "minLength": 1 }
+      }
+    },
+    "observedReaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expectedReactionId", "state", "observedCount", "artifactIds"],
+      "properties": {
+        "expectedReactionId": { "type": "string", "minLength": 1 },
+        "state": { "$ref": "#/$defs/exitState" },
+        "observedCount": { "type": "integer", "minimum": 0 },
+        "artifactIds": { "$ref": "#/$defs/artifactIds" }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capturedAt", "selectorDigest", "rowCount", "valueDigest", "artifactIds"],
+      "properties": {
+        "capturedAt": { "type": "string", "format": "date-time" },
+        "selectorDigest": { "$ref": "#/$defs/sha256" },
+        "rowCount": { "type": "integer", "minimum": 0 },
+        "valueDigest": { "$ref": "#/$defs/sha256" },
+        "artifactIds": { "$ref": "#/$defs/artifactIds" }
+      }
+    },
+    "readbackPair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "expectedReactionId", "store", "before", "after"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "expectedReactionId": { "type": "string", "minLength": 1 },
+        "store": { "type": "string", "minLength": 1 },
+        "before": { "$ref": "#/$defs/snapshot" },
+        "after": { "$ref": "#/$defs/snapshot" }
+      }
+    },
+    "scenarioProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "state", "authorityRef", "artifactIds"],
+      "properties": {
+        "kind": {
+          "enum": [
+            "atomic-core",
+            "async-delivery",
+            "idempotency-replay",
+            "concurrency",
+            "wrong-role",
+            "wrong-tenant",
+            "partial-failure-recovery",
+            "correction-reversal",
+            "reconciliation"
+          ]
+        },
+        "state": {
+          "enum": ["PASS", "VIOLATION", "INCOMPLETE", "STALE", "UNKNOWN", "NOT_APPLICABLE"]
+        },
+        "authorityRef": { "type": ["string", "null"] },
+        "artifactIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "locator", "digest", "capturedAt", "producer", "redaction"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "minLength": 1 },
+        "locator": { "type": "string", "minLength": 1 },
+        "digest": { "$ref": "#/$defs/sha256" },
+        "capturedAt": { "type": "string", "format": "date-time" },
+        "producer": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version", "identity"],
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "version": { "type": "string", "minLength": 1 },
+            "identity": { "type": "string", "minLength": 1 }
+          }
+        },
+        "redaction": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["classification", "applied"],
+          "properties": {
+            "classification": { "enum": ["public", "internal", "confidential", "restricted"] },
+            "applied": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "negativeControl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "testContractId",
+        "testContractVersion",
+        "repositorySha",
+        "environmentClass",
+        "isolation",
+        "executedAt",
+        "mutation",
+        "expectedFailure",
+        "observedFailure",
+        "artifactIds"
+      ],
+      "properties": {
+        "state": { "$ref": "#/$defs/exitState" },
+        "testContractId": { "type": "string", "minLength": 1 },
+        "testContractVersion": { "type": "string", "minLength": 1 },
+        "repositorySha": { "$ref": "#/$defs/gitSha" },
+        "environmentClass": { "$ref": "#/$defs/safeTestEnvironmentClass" },
+        "isolation": { "const": "isolated" },
+        "executedAt": { "type": "string", "format": "date-time" },
+        "mutation": { "enum": ["removed", "duplicated", "miscalculated", "unauthorized"] },
+        "expectedFailure": { "type": "string", "minLength": 1 },
+        "observedFailure": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["detected", "code"],
+          "properties": {
+            "detected": { "type": "boolean" },
+            "code": { "type": "string", "minLength": 1 }
+          }
+        },
+        "artifactIds": { "$ref": "#/$defs/artifactIds" }
+      }
+    },
+    "cleanupAbsenceReadback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resourceId", "store", "capturedAt", "selectorDigest", "rowCount", "artifactIds"],
+      "properties": {
+        "resourceId": { "type": "string", "minLength": 1 },
+        "store": { "type": "string", "minLength": 1 },
+        "capturedAt": { "type": "string", "format": "date-time" },
+        "selectorDigest": { "$ref": "#/$defs/sha256" },
+        "rowCount": { "const": 0 },
+        "artifactIds": { "$ref": "#/$defs/artifactIds" }
+      }
+    },
+    "cleanup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "authorityRef", "ownedResourceIds", "absenceReadbacks"],
+      "properties": {
+        "state": { "enum": ["PASS", "NOT_APPLICABLE"] },
+        "authorityRef": { "type": ["string", "null"] },
+        "ownedResourceIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "absenceReadbacks": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/cleanupAbsenceReadback" }
+        }
+      }
+    }
+  }
+}

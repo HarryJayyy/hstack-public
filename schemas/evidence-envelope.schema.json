@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/HarryJayyy/hstack-public/schemas/evidence-envelope.schema.json",
+  "title": "HStack Evidence Envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion", "state", "exitCode", "generatedAt", "subject", "repository",
+    "revision", "source", "freshness", "capabilities", "findings", "artifacts",
+    "deployment", "invalidationTriggers"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "hstack-evidence/v1" },
+    "state": { "enum": ["PASS", "VIOLATION", "INCOMPLETE", "STALE", "UNKNOWN"] },
+    "exitCode": { "enum": [0, 2, 3, 4, 5] },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "subject": { "type": "string", "minLength": 1 },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "identity", "remote", "remoteUrl", "defaultBranch"],
+      "properties": {
+        "provider": { "enum": ["github", "gitlab"] },
+        "identity": { "type": "string", "minLength": 1 },
+        "remote": { "type": "string", "minLength": 1 },
+        "remoteUrl": { "type": ["string", "null"] },
+        "defaultBranch": { "type": ["string", "null"] }
+      }
+    },
+    "revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["headSha", "branch", "worktreeFingerprint", "dirty"],
+      "properties": {
+        "headSha": { "type": "string", "minLength": 1 },
+        "branch": { "type": ["string", "null"] },
+        "worktreeFingerprint": { "type": ["string", "null"] },
+        "dirty": { "type": ["boolean", "null"] }
+      }
+    },
+    "source": { "type": "object" },
+    "freshness": {
+      "type": "object",
+      "required": ["state"],
+      "properties": { "state": { "enum": ["PASS", "VIOLATION", "INCOMPLETE", "STALE", "UNKNOWN"] } }
+    },
+    "capabilities": { "type": "object" },
+    "findings": { "type": "array", "items": { "type": "object" } },
+    "artifacts": { "type": "array", "items": { "type": "object" } },
+    "deployment": { "type": ["object", "null"] },
+    "invalidationTriggers": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+  }
+}

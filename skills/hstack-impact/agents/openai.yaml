@@ -1,0 +1,6 @@
+interface:
+  display_name: "HStack Impact"
+  short_description: "Map change contracts and blast radius"
+  default_prompt: "Use $hstack-impact to define this change contract, dependencies, invariants, and required proof before implementation."
+policy:
+  allow_implicit_invocation: true

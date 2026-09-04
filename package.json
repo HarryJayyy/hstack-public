@@ -1,0 +1,26 @@
+{
+  "name": "hstack",
+  "version": "0.4.1",
+  "private": true,
+  "type": "module",
+  "description": "A structured problem-solving and evidence stack for development agents.",
+  "bin": {
+    "hstack": "./bin/hstack.mjs"
+  },
+  "scripts": {
+    "test": "node --test",
+    "validate": "node scripts/validate.mjs",
+    "package:plugin": "node scripts/package-plugin.mjs",
+    "route": "node bin/hstack.mjs route",
+    "execute": "node bin/hstack.mjs execute",
+    "inventory": "node bin/hstack.mjs inventory",
+    "fingerprint": "node bin/hstack.mjs fingerprint",
+    "redact": "node bin/hstack.mjs redact",
+    "status": "node bin/hstack.mjs status",
+    "verify-event": "node bin/hstack.mjs verify-event"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

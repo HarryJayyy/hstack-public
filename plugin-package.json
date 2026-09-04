@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "output": "dist/hstack",
+  "include": [
+    ".codex-plugin",
+    ".hstack.example.json",
+    "bin",
+    "docs/ARCHITECTURE.md",
+    "docs/MANUAL.md",
+    "docs/PROFILE.md",
+    "lib",
+    "LICENSE",
+    "package.json",
+    "profiles",
+    "README.md",
+    "schemas",
+    "scripts/fingerprint.mjs",
+    "scripts/execute.mjs",
+    "scripts/inventory.mjs",
+    "scripts/redact.mjs",
+    "scripts/route.mjs",
+    "skills"
+  ],
+  "runtimeScripts": [
+    "route",
+    "execute",
+    "inventory",
+    "fingerprint",
+    "redact",
+    "status",
+    "verify-event"
+  ]
+}
