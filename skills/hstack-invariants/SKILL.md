@@ -1,6 +1,6 @@
 ---
 name: hstack-invariants
-description: Protect durable business and system invariants across money, inventory, lifecycle, authorization, compliance, asynchronous work, and integrations. Use when technically valid code could still leave persisted or externally visible state incorrect.
+description: Check business invariants for money, inventory, authorization, lifecycle transitions, and asynchronous integrations.
 ---
 
 # HStack Invariants

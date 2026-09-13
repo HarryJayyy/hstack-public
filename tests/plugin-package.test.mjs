@@ -19,15 +19,20 @@ test('lean plugin package contains runtime files and excludes development files'
     'bin/hstack.mjs',
     'scripts/execute.mjs',
     'lib/event-proof.mjs',
+    'lib/verification-guide.mjs',
     'profiles/generic.json',
     'schemas/event-proof-receipt.schema.json',
     'skills/hstack-mode/SKILL.md',
+    'skills/hstack-mode/references/engineering-workflows.md',
+    'skills/hstack-evidence/references/verification-guides.md',
+    'skills/hstack-evidence/references/adaptive-verification.md',
+    'skills/hstack-impact/references/gap-discovery.md',
     'docs/MANUAL.md',
     'LICENSE',
   ]) {
     assert.equal(existsSync(resolve(output, path)), true, `${path} should be packaged`);
   }
-  for (const path of ['.github', 'tests', 'AGENTS.md', 'SECURITY.md', 'docs/DESIGN-EVIDENCE.md', 'scripts/validate.mjs']) {
+  for (const path of ['.github', 'tests', 'evaluations', 'AGENTS.md', 'SECURITY.md', 'docs/DESIGN-EVIDENCE.md', 'scripts/validate.mjs', 'scripts/evaluate-skills.mjs', 'scripts/skill-evaluation.mjs']) {
     assert.equal(existsSync(resolve(output, path)), false, `${path} should be excluded`);
   }
 
@@ -36,10 +41,17 @@ test('lean plugin package contains runtime files and excludes development files'
   assert.equal(runtimePackage.scripts.test, undefined);
   assert.equal(runtimePackage.scripts.validate, undefined);
   assert.equal(runtimePackage.scripts['package:plugin'], undefined);
+  assert.equal(runtimePackage.scripts['eval:skills'], undefined);
+  assert.equal(runtimePackage.scripts['verification-guide'], 'node bin/hstack.mjs verification-guide');
 
   const cli = spawnSync(process.execPath, [resolve(output, 'bin/hstack.mjs'), 'version'], {
     cwd: dirname(root), encoding: 'utf8',
   });
   assert.equal(cli.status, 0);
   assert.equal(cli.stdout.trim(), '0.4.1');
+  const guideHelp = spawnSync(process.execPath, [resolve(output, 'bin/hstack.mjs'), 'verification-guide', '--help'], {
+    cwd: dirname(root), encoding: 'utf8',
+  });
+  assert.equal(guideHelp.status, 0, guideHelp.stderr);
+  assert.match(guideHelp.stdout, /never writes files or runs procedures/);
 });

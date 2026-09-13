@@ -1,6 +1,6 @@
 ---
 name: hstack-reconcile
-description: Inventory branches, worktrees, dirty state, remotes, and pull requests without deleting or rewriting work. Use before starting or ending non-trivial changes, during handoffs, or when a shared repository contains uncertain concurrent work.
+description: Inventory Git branches, worktrees, dirty state, and PRs for handoffs, cleanup assessment, or uncertain concurrent work.
 ---
 
 # HStack Reconcile

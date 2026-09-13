@@ -1,23 +1,35 @@
 ---
 name: hstack-mode
-description: Route and control non-trivial agent development work from problem classification through verified closeout. Use when a task spans files or systems, changes durable state, carries operational risk, or needs a defensible result rather than code generation alone.
+description: Coordinate HStack workflows for cross-system or operationally risky development that needs explicit controls and evidence.
 ---
 
 # HStack Mode
 
 Use HStack as a control plane around the host repository's own engineering process. Never assume that invoking this skill authorizes mutation, cleanup, merge, deployment, publication, or a business-policy choice.
 
-## Operating sequence
+## Route the work
 
-1. Establish the host profile and authority mode with `hstack-host-profile`.
-2. Reconcile branch, PR, worktree, and dirty-state facts with `hstack-reconcile` before changing files.
+1. Establish the applicable host rules and authority mode. Use `hstack-host-profile` when these are unknown or changed; reuse a current profile.
+2. Check the target branch and dirty state before editing. Use `hstack-reconcile` for shared-worktree uncertainty, handoff, cleanup assessment, or a requested full inventory.
 3. Classify the task playbook, risk band, overlays, and declared operations. Use `hstack route --text "<request>" --operations <declared-operations> --paths <changed-paths>` when the installed runtime is available. Treat this output as advisory only: it never grants execution readiness. Before mutation, require a separately supplied structured execution contract and evaluate it with `hstack execute`; do not synthesize that contract from the free-text route result.
-4. For a change, write a change contract and map the blast radius with `hstack-impact` before implementation.
+
+   Revisit advisory classification when traced code, state effects or new observations contradict it. Keyword coverage is not semantic understanding. Select only relevant context and checks; classification changes never expand operations, authorization or host-policy exceptions.
+4. Define the intended result, affected boundaries, and completion evidence before implementation. Use `hstack-impact` when dependency or durable-state effects need explicit tracing; keep a local change contract proportionate.
 5. Apply `hstack-invariants` whenever money, inventory, lifecycle, authorization, compliance, asynchronous work, or external integrations are involved.
 6. Execute only the bounded work the user authorized. Preserve unrelated and ambiguous work.
 7. Bind verification to the exact final state and issue a verdict with `hstack-evidence`.
 
-For the composition model and playbook definitions, read [composition.md](references/composition.md) and [playbooks.md](references/playbooks.md). Resolve controls using [control-precedence.md](references/control-precedence.md). Read [verdicts.md](references/verdicts.md) before final closeout.
+Read references only for the decision at hand:
+
+- [composition.md](references/composition.md): how playbooks, overlays, profiles, and adapters combine.
+- [playbooks.md](references/playbooks.md): selecting an unfamiliar task workflow.
+- [engineering-workflows.md](references/engineering-workflows.md): practical investigation, implementation, and operational steps for the selected playbook.
+- [session-recovery.md](references/session-recovery.md): pausing or resuming an interrupted task without losing decisions or repeating completed work.
+- [behavioral-evaluation.md](references/behavioral-evaluation.md): evaluating changes to HStack's agent instructions, not ordinary product changes.
+- [control-precedence.md](references/control-precedence.md): resolving competing controls or authorization uncertainty.
+- [verdicts.md](references/verdicts.md): choosing a formal HStack closeout verdict.
+
+Small, reversible edits do not require the entire HStack stack. Continue through implementation and the required verification within the authorized scope. Existing authorization remains valid; a skill invocation neither adds authority nor requires asking again for already-authorized work.
 
 ## Invariants
 

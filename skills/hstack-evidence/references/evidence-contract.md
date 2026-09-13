@@ -14,3 +14,5 @@ For each material claim, record:
 - invalidation triggers requiring rerun.
 
 Prefer independent readback over assertions derived from the same code path that performed the write.
+
+For consequential expectations, record the source/derivation separately from the changed implementation. For material observations, distinguish system-observed, actor-reported, provider-confirmed and inferred facts and their limitations. Use [adaptive-verification.md](adaptive-verification.md) for selection and failed-loop handling. These annotations do not expand the existing machine receipt schema or certify observation truth.

@@ -41,6 +41,19 @@ or low-risk visual polish unless the host repository requires it.
 For inputs, outputs, direct invocation examples, playbooks, overlays, and CLI commands, read the
 [HStack Manual](docs/MANUAL.md).
 
+The six functions also provide focused procedures for:
+
+- source-backed project verification guides and recipe maintenance (`hstack-evidence`);
+- practical engineering workflows and task pickup/pause (`hstack-mode`);
+- interface sketches, alternatives and implementation-quality checkpoints (`hstack-impact`);
+- controlled agent-behavior evaluation of HStack changes (`hstack-mode`, source tools).
+- targeted requirement-gap discovery and source/approval provenance (`hstack-impact`);
+- independent expectations, observation classification and bounded adaptive verification (`hstack-evidence`).
+
+Generated guides remain draft until exercised. The behavioral suite can prepare local tasks and
+score independent annotated observations; it does not launch agents or establish performance gains
+without actual comparison runs.
+
 ## Quick use
 
 Start a complete non-trivial task:
@@ -145,6 +158,7 @@ hstack fingerprint --repo C:/path/to/repository
 hstack redact --input handoff.json --sensitive-values sensitive-values.json
 Get-Content checks.json | hstack status
 Get-Content receipt.json | hstack verify-event
+hstack verification-guide --input guide.json
 ```
 
 Inside an installed skill, the agent resolves the plugin root from `SKILL.md` and executes

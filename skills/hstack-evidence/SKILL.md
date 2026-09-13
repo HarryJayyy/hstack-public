@@ -1,6 +1,6 @@
 ---
 name: hstack-evidence
-description: Design and evaluate multi-layer verification, bind results to exact code and environment state, and issue precise PASS, correction, blocked, parked, or unverified verdicts. Use before claiming a complex change is complete, safe, mergeable, deployed, or correct.
+description: Design runnable project verification and evaluate correctness evidence against exact code and environment state.
 ---
 
 # HStack Evidence
@@ -11,11 +11,15 @@ Verification must test the invariant, not merely the implementation's ability to
 
 Before execution, define the claim, risk, proving observation, command or procedure, environment, fixture, expected result, failure meaning, state binding, and freshness window. Use [evidence-contract.md](references/evidence-contract.md). For durable output, use [evidence-envelope.md](references/evidence-envelope.md). When one event crosses module boundaries, use [event-proof.md](references/event-proof.md).
 
-## Verification sequence
+Use [adaptive-verification.md](references/adaptive-verification.md) to select checks, establish independent expectations, classify observations, or resolve a failed/blocked verification loop. Narrow claims to what the observations support without weakening required host gates.
 
-1. Capture a pre-change failure or baseline where feasible.
+For creating or repairing a project-local verification guide, use [verification-guides.md](references/verification-guides.md). Prefer an existing runnable guide over creating another. A generated guide is a draft until exercised; the guide generator never executes commands or grants authority.
+
+## Verification by affected boundary
+
+1. For defect correction, capture a pre-change failure or meaningful baseline where feasible.
 2. Run focused deterministic checks for the changed behavior.
-3. Run domain adapters selected by the router: ledger reconciliation, stock replay/readback, migration rehearsal, permission matrix, retry/concurrency proof, contract replay, browser journey, or post-deploy watch.
+3. Run only the domain adapters required by the affected boundaries and host rules: ledger reconciliation, stock replay/readback, migration rehearsal, permission matrix, retry/concurrency proof, contract replay, browser journey, or post-deploy watch.
 4. Run host-required adjacent and aggregate gates proportionate to risk.
 5. Inspect the final diff and rerun checks invalidated by later edits.
 6. Bind results to repository path, commit or worktree fingerprint, profile, environment, data/fixture version, and time.

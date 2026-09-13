@@ -14,6 +14,10 @@ need.
 | “What else could this change affect?” | `$hstack-impact` |
 | “Which durable truths must remain correct?” | `$hstack-invariants` |
 | “Can we honestly claim this is complete or correct?” | `$hstack-evidence` |
+| “Create or maintain runnable checks for this project.” | `$hstack-evidence` — verification guides |
+| “Resume this task without restarting it.” | `$hstack-mode` — session recovery |
+| “Compare designs before implementing a costly boundary.” | `$hstack-impact` — design quality |
+| “Evaluate whether these HStack instructions help agents.” | `$hstack-mode` — behavioral evaluation |
 
 ## 1. `$hstack-mode`
 
@@ -346,6 +350,28 @@ produce and verify the underlying artifacts.
 
 ## Task playbooks
 
+### Conditional reasoning controls
+
+- **Gap discovery (`$hstack-impact`):** select only questions relevant to traced access, retry identity, lifecycle, downstream consumers and partial effects. Inspect existing answers before asking the owner.
+- **Requirement provenance (`$hstack-impact`):** reuse host records for source, interpretation, applicability and approval. Keep approval, implementation and verification statuses separate; unresolved consequential decisions block dependent behavior only.
+- **Independent expectations (`$hstack-evidence`):** use approved examples, separate calculations or source-backed references rather than the implementation's own answer.
+- **Observation classification (`$hstack-evidence`):** distinguish system-observed, actor-reported, provider-confirmed and inferred facts. Verify record handling without claiming an unobserved physical action occurred.
+- **Adaptive checks (`$hstack-evidence`):** name the uncertainty each check resolves, preserve mandatory host gates, refresh invalidated evidence, and stop unchanged failing/unavailable loops within budget.
+- **Advisory reclassification (`$hstack-mode`):** revise selected controls when actual code/state contradicts keyword routing; never expand execution authority through classification.
+
+These are conditional agent procedures, not a requirement compiler, automatic graph integration,
+new receipt trust levels, or machine enforcement of business approval. They do not require more top-level skills.
+
+```text
+Use $hstack-impact to discover missing acceptance behavior for this state change. Reuse approved
+host requirements, inspect existing answers, and ask only consequential decisions that remain unresolved.
+```
+
+```text
+Use $hstack-evidence to choose the next discriminating check. Separate test-harness failure from
+product failure, retain prior results, and do not repeat unchanged unavailable checks.
+```
+
 | Playbook | Use when | Core method |
 | --- | --- | --- |
 | `investigation` | explain, audit, review, trace | facts, hypotheses, evidence, no implied mutation |
@@ -360,6 +386,74 @@ produce and verify the underlying artifacts.
 | `release-verification` | a release claim needs proof | artifact identity, environment, live behavior, watch |
 
 ## CLI reference
+
+### Create or maintain a verification guide
+
+- Function: `$hstack-evidence`.
+- Input: target feature, existing host harness, environment and authorized operations.
+- Method: discover source-backed doctor, launch, drive, readback, negative-control and owned-cleanup procedures; format a draft and exercise selected features within scope.
+- Output: a project-local guide plus separate actual execution evidence. Unexercised features remain draft.
+- Maintenance: distinguish obsolete recipes from product failures; repair only authorized guide drift and rerun invalidated checks.
+
+```text
+Use $hstack-evidence to create a local verification guide for worker retries. Reuse our existing
+test harness. You may edit the guide and run local checks, but do not deploy or use production data.
+```
+
+```powershell
+hstack verification-guide --input guide.json
+hstack verification-guide --input guide.json --markdown
+```
+
+The input contract and example are in [Verification Guides](../skills/hstack-evidence/references/verification-guides.md).
+The CLI emits to stdout only. Exit 0 means successful draft formatting, not verified business correctness.
+It never writes the guide, executes supplied procedures, or grants authority. Do not publish raw host guides without disclosure review.
+
+### Resume or pause a task
+
+- Function: `$hstack-mode`.
+- Input: prior capsule or scoped task trail and current authorization.
+- Output: inherited decisions, completed/pending criteria, current state, still-valid evidence and one resume action.
+- Refresh only invalidated evidence. A pause does not imply permission to stash, commit, push or clean.
+
+```text
+Use $hstack-mode to resume from this handoff. Check current state, reuse completed work and valid
+evidence, then finish the remaining local checks. Do not push, merge or deploy.
+```
+
+See [Session Recovery](../skills/hstack-mode/references/session-recovery.md).
+
+### Design-quality checkpoint
+
+- Function: `$hstack-impact`.
+- Input: intended caller behavior, existing boundaries and non-trivial design constraints.
+- Output: interface sketch, material alternatives, trade-offs, test seams and redesign signals.
+- Use a compact review for a local change; do not force competing architectures for an obvious fix.
+
+```text
+Use $hstack-impact to compare designs for this new integration boundary. Show caller usage, state
+ownership, failure semantics and test seams. Do not implement yet.
+```
+
+See [Design Quality](../skills/hstack-impact/references/design-quality.md).
+
+### Evaluate HStack's agent behavior (source repository only)
+
+```powershell
+npm run eval:skills
+npm run eval:skills -- --prepare duplicate-delivery
+npm run eval:skills -- --input observations.json --artifact-root C:/path/to/owned-artifacts
+```
+
+- No observations: `NOT_RUN`, exit 3.
+- Preparation: creates an owned temporary candidate workspace; does not launch an agent or execute fixtures.
+- Scoring: consumes independent reviewer annotations with hash-bound artifact citations. Complete annotations are `SCORED`; missing cases or unassessed criteria are `INCOMPLETE`.
+- Failed criteria exit 2 even when scoring is complete. A scored comparison is not a business-release verdict or proof of superior speed.
+- Keep rubric and observations away from candidate context. Compare like-for-like runs; preserve critical failures, time and tool counts separately.
+
+See [Behavioral Evaluation](../skills/hstack-mode/references/behavioral-evaluation.md) for the observation contract.
+The source fixtures and scorer are excluded from the lean plugin package. Live agent runs and native
+Claude Code/Cursor tests have not been performed by adding this suite.
 
 `hstack` is shorthand for the installed entry point. Agents resolve the active skill's `SKILL.md`,
 move up two directories to the plugin root, and run `node <plugin-root>/bin/hstack.mjs`. This avoids
