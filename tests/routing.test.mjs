@@ -10,6 +10,26 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const generic = readProfile(resolve(root, 'profiles/generic.json'));
 const highAssurance = readProfile(resolve(root, 'profiles/high-assurance-system.json'));
 
+test('async wording selects retry proof without granting execution authority', () => {
+  for (const term of ['idempotency', 'idempotence', 'idempotent', 'concurrency', 'concurrent', 'concurrently', 'retry', 'retries', 'retrying', 'retried', 'worker', 'queue', 'webhook', 'asynchronous']) {
+    const route = routeTask({ request: `fix ${term} in event processing`, operations: ['inspect'] }, generic);
+    assert.ok(route.overlays.includes('async-concurrency'), `missing overlay for ${term}`);
+    assert.ok(route.verificationAdapters.includes('retry-concurrency-proof'), `missing proof for ${term}`);
+    assert.equal(route.riskBand, 'moderate');
+    assert.equal(route.advisoryOnly, true);
+    assert.equal(route.executionReady, undefined);
+  }
+});
+
+test('async keywords do not match unrelated substrings or authorize mutations', () => {
+  const ordinary = routeTask({ request: 'fix the artwork and questionnaire title', operations: ['inspect'] }, generic);
+  assert.deepEqual(ordinary.overlays, []);
+  const classification = routeTask({ request: 'fix idempotency', operations: ['modify-repository'] }, generic);
+  assert.ok(classification.overlays.includes('async-concurrency'));
+  assert.equal(classification.authorizationAssessmentState, 'INCOMPLETE');
+  assert.equal(classification.executionReady, undefined);
+});
+
 test('financial behavior requires an explicit business decision and ledger proof', () => {
   const route = routeTask({ request: 'fix invoice tax rounding in the ledger' }, generic);
   assert.equal(route.playbook, 'bug-fix');

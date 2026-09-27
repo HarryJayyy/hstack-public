@@ -23,7 +23,7 @@ test('stable CLI reports help and package version', () => {
   assert.match(help.stdout, /Usage: hstack <command>/);
   const version = run(['version']);
   assert.equal(version.status, 0);
-  assert.equal(version.stdout.trim(), '0.4.1');
+  assert.equal(version.stdout.trim(), '0.4.2');
 });
 
 test('stable CLI delegates commands without relying on host npm scripts', () => {

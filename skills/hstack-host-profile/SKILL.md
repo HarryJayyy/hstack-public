@@ -1,6 +1,6 @@
 ---
 name: hstack-host-profile
-description: Discover and enforce a repository's authority mode, local instructions, protected boundaries, framework conventions, and native verification commands. Use before HStack changes a repository or when deciding whether HStack is canonical, an overlay, or advisory only.
+description: Establish a repository's HStack authority, protected boundaries, and native checks when starting HStack work or changing its profile.
 ---
 
 # HStack Host Profile
@@ -9,7 +9,7 @@ Establish the governing rules before planning or mutation.
 
 ## Procedure
 
-1. Read instructions from the workspace root through the target file's directory, including `AGENTS.md`, contribution guides, architecture docs, and operational runbooks.
+1. Read applicable `AGENTS.md` instructions from the workspace root through the target directory. Consult contribution guides, architecture docs, and operational runbooks only when the affected workflow needs them or host instructions require them.
 2. Load `.hstack.json` when present. Otherwise choose a bundled profile only as a starting hypothesis and verify it against the repository.
 3. Set exactly one authority mode: `canonical`, `overlay`, or `advisory`.
 4. Record repository visibility, source/license boundary, primary remote, detected default branch, protected branches, risk-sensitive paths, and native checks.

@@ -41,6 +41,33 @@ or low-risk visual polish unless the host repository requires it.
 For inputs, outputs, direct invocation examples, playbooks, overlays, and CLI commands, read the
 [HStack Manual](docs/MANUAL.md).
 
+The six functions also provide focused procedures for:
+
+- source-backed project verification guides and recipe maintenance (`hstack-evidence`);
+- practical engineering workflows and task pickup/pause (`hstack-mode`);
+- interface sketches, alternatives and implementation-quality checkpoints (`hstack-impact`);
+- controlled agent-behavior evaluation of HStack changes (`hstack-mode`, source tools).
+- targeted requirement-gap discovery and source/approval provenance (`hstack-impact`);
+- independent expectations, observation classification and bounded adaptive verification (`hstack-evidence`).
+- continuing an authorized work queue when one item is blocked (`hstack-mode`).
+
+Generated guides remain draft until exercised. The behavioral suite can prepare local tasks and
+score independent annotated observations; it does not launch agents or establish performance gains
+without actual comparison runs.
+
+## Continue when one item blocks
+
+For a multi-item request, HStack keeps the run moving through independent authorized work. A blocked
+item gets one bounded diagnosis, exact-state evidence and a resume condition. The agent then starts
+the next ready item without repeating an unchanged CI, service or approval check. An unfinished
+required item still prevents an overall `PASS`; moving on does not grant new scope, merge, deploy or
+cleanup authority. See [Continuation](skills/hstack-mode/references/continuation.md).
+
+```text
+Use $hstack-mode to work through these two changes. If CI blocks the first, record its exact state
+and resume condition, then complete the independent local fix. Do not merge or deploy.
+```
+
 ## Quick use
 
 Start a complete non-trivial task:
@@ -145,6 +172,7 @@ hstack fingerprint --repo C:/path/to/repository
 hstack redact --input handoff.json --sensitive-values sensitive-values.json
 Get-Content checks.json | hstack status
 Get-Content receipt.json | hstack verify-event
+hstack verification-guide --input guide.json
 ```
 
 Inside an installed skill, the agent resolves the plugin root from `SKILL.md` and executes

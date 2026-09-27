@@ -1,6 +1,6 @@
 ---
 name: hstack-impact
-description: Define a change contract and trace blast radius across code, data, state transitions, jobs, integrations, permissions, operations, and adjacent workflows. Use before implementing any non-trivial feature, bug fix, refactor, migration, or cross-system change.
+description: Map dependencies, durable-state effects, and required proof for changes crossing module, data, permission, or integration boundaries.
 ---
 
 # HStack Impact
@@ -9,7 +9,9 @@ Turn the request into explicit invariants and evidence obligations before editin
 
 ## Change contract
 
-Write the fields in [change-contract.md](references/change-contract.md). Mark unknown policy rather than filling it with an assumption. If an unknown changes money, legal obligations, access, retention, or irreversible lifecycle behavior, stop with `BLOCKED BUSINESS DECISION`.
+Use [change-contract.md](references/change-contract.md) for a formal change contract; include only relevant fields for a bounded local change, unless the host requires the full record. Mark unknown policy rather than filling it with an assumption. If an unknown changes money, legal obligations, access, retention, or irreversible lifecycle behavior, stop with `BLOCKED BUSINESS DECISION`.
+
+Use [gap-discovery.md](references/gap-discovery.md) when the request may omit material acceptance behavior or boundary effects. Inspect existing answers first; do not turn discovery into a mandatory questionnaire.
 
 ## Blast-radius procedure
 
@@ -21,6 +23,8 @@ Write the fields in [change-contract.md](references/change-contract.md). Mark un
 6. Select verification at every material boundary, including readback of durable values.
 
 Use [blast-radius.md](references/blast-radius.md) as the checklist. Do not equate "no static importer" with "unused"; validate framework entrypoints and dynamic dispatch.
+
+For a non-trivial design or structural change, use [design-quality.md](references/design-quality.md) to compare interfaces, test seams, and implementation alternatives. Do not require competing designs for an obvious local fix.
 
 ## Output
 

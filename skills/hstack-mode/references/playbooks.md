@@ -14,3 +14,5 @@
 | Release verification | Bind expected artifacts and live behavior to the release SHA, environment, and observation window. |
 
 For every playbook, layer on all applicable domain controls. A UI task that changes payment state is not merely a UI task.
+
+Use [engineering-workflows.md](engineering-workflows.md) for the selected playbook's execution and failure-handling steps. Use [session-recovery.md](session-recovery.md) before routing an interrupted task's remaining work. These are procedures, not additional runtime playbook names.

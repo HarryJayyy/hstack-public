@@ -8,6 +8,8 @@ copy source from researched upstream projects without a concrete need and licens
 
 - Support Node.js 20 or newer with no runtime dependencies unless a dependency is clearly justified.
 - Keep the six skills composable; do not turn `hstack-mode` into a duplicate of every specialist skill.
+- Verification-guide formatting must never execute supplied procedures or mark generated features verified.
+- Behavioral scorer tests are synthetic. Report live agent evaluations as not run unless retained, bound observations exist; keep critical failures separate from aggregate scores.
 - Use `apply_patch` for source edits.
 - Add or update deterministic tests for router, profile, inventory, or fingerprint behavior.
 - Before pushing, run `npm test`, `npm run validate`, `npm run package:plugin`, the plugin validator
