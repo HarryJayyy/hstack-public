@@ -7,6 +7,7 @@ import { spawnSync } from 'node:child_process';
 import { assessChangeStatus } from '../lib/change-status.mjs';
 import { evaluateEventProofReceipt, validateEventProofReceipt } from '../lib/event-proof.mjs';
 import { EXIT_STATES, exitCodeFor } from '../lib/states.mjs';
+import { createVerificationGuide } from '../lib/verification-guide.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DELEGATED_COMMANDS = new Map([
@@ -30,6 +31,7 @@ Commands:
   redact         Redact a JSON or text handoff
   status         Evaluate CI and review status from JSON
   verify-event   Validate an hstack-event-proof/v1 receipt
+  verification-guide  Format a supplied project verification recipe (never execute)
   version        Print the installed HStack version
 
 Run hstack <command> --help for command options.`);
@@ -86,6 +88,27 @@ function version() {
   return 0;
 }
 
+function verificationGuide(args) {
+  if (args.includes('--help')) {
+    console.log('Usage: hstack verification-guide [--input guide.json] [--markdown]\nReads hstack-verification-guide/v1 JSON. Emits a draft; never writes files or runs procedures.');
+    return 0;
+  }
+  const allowed = new Set(['--input', '--markdown']);
+  const seen = new Set();
+  for (let index = 0; index < args.length; index += 1) {
+    if (!allowed.has(args[index])) throw new Error(`unsupported verification-guide option: ${args[index]}`);
+    if (seen.has(args[index])) throw new Error(`duplicate verification-guide option: ${args[index]}`);
+    seen.add(args[index]);
+    if (args[index] === '--input') {
+      if (!args[index + 1] || args[index + 1].startsWith('--')) throw new Error('--input requires a path');
+      index += 1;
+    }
+  }
+  const result = createVerificationGuide(JSON.parse(inputFrom(args)));
+  console.log(args.includes('--markdown') ? result.markdown : JSON.stringify(result, null, 2));
+  return 0; // Successful formatting, not a business verification PASS.
+}
+
 const [command, ...args] = process.argv.slice(2);
 try {
   if (!command || command === '--help' || command === '-h' || command === 'help') {
@@ -99,6 +122,8 @@ try {
     process.exitCode = evaluateStatus(args);
   } else if (command === 'verify-event') {
     process.exitCode = verifyEvent(args);
+  } else if (command === 'verification-guide') {
+    process.exitCode = verificationGuide(args);
   } else {
     console.error(`Unknown HStack command: ${command}`);
     help();

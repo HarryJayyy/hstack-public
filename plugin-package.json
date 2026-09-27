@@ -28,6 +28,7 @@
     "fingerprint",
     "redact",
     "status",
-    "verify-event"
+    "verify-event",
+    "verification-guide"
   ]
 }

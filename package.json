@@ -1,6 +1,6 @@
 {
   "name": "hstack",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": true,
   "type": "module",
   "description": "A structured problem-solving and evidence stack for development agents.",
@@ -17,7 +17,9 @@
     "fingerprint": "node bin/hstack.mjs fingerprint",
     "redact": "node bin/hstack.mjs redact",
     "status": "node bin/hstack.mjs status",
-    "verify-event": "node bin/hstack.mjs verify-event"
+    "verify-event": "node bin/hstack.mjs verify-event",
+    "verification-guide": "node bin/hstack.mjs verification-guide",
+    "eval:skills": "node scripts/evaluate-skills.mjs"
   },
   "engines": {
     "node": ">=20"
